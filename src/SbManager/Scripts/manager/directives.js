@@ -52,7 +52,7 @@ $app.directive('messageproperty', function () {
         }
     };
 });
-$app.directive('peek', ['$modal', '_', 'messageTypeConstants', 'peekViewFactory', function ($modal, _, messageTypeConstants, PeekViewFactory) {
+$app.directive('peek', ['$modal', '_', 'messageTypeConstants', 'peekViewFactory', '$http', function ($modal, _, messageTypeConstants, PeekViewFactory, $http) {
     return {
         restrict: 'EA',
         templateUrl: window.applicationBasePath + '/Content/tmpl/directives/peek.html',
@@ -84,11 +84,13 @@ $app.directive('peek', ['$modal', '_', 'messageTypeConstants', 'peekViewFactory'
                     addActiveMessagesCountToPeekCount($scope.peekCount)
                     : $scope.peekCount; //needed to extract scheduled messages
 
-                $.getJSON(actionUrl + "/messages/" + calculatedPeekCount, function (d) {
+                $http.get(actionUrl + "/messages/" + calculatedPeekCount)
+                .then(function (response) {
                     $scope.peeking = false;
-                    $scope.messages = isScheduled ? filterScheduledMessages(d.Messages) : d.Messages;
-                    $scope.$digest();
-                });
+                        $scope.messages = isScheduled
+                            ? filterScheduledMessages(response.data.Messages)
+                            : response.data.Messages;
+                    });
             };
             $scope.view = function (model) {
                 $scope.viewing = model;
@@ -107,17 +109,19 @@ $app.directive('peek', ['$modal', '_', 'messageTypeConstants', 'peekViewFactory'
             $scope.removeMessage = function (msg) {
                 $scope.peeking = true;
                 $scope.messages = [];
-                $.post(actionUrl + "/remove", { messageId: msg.MessageId }, function (d) {
-                    $scope.viewing = null;
-                    $scope.peek();
-                    setTimeout($scope.$parent.refresh, 1);
-                });
+                $http.post(actionUrl + "/remove", { messageId: msg.MessageId })
+                    .then(function() {
+                        $scope.viewing = null;
+                        $scope.peek();
+                        setTimeout($scope.$parent.refresh, 1);
+                    });
             };
             $scope.requeueMessage = function (msg) {
                 $scope.peeking = true;
                 $scope.messages = [];
 
-                $.post(actionUrl + "/requeue", { messageId: msg.MessageId }, function (d) {
+                $http.post(actionUrl + "/requeue", { messageId: msg.MessageId })
+                    .then(function () {
                     $scope.viewing = null;
                     $scope.peek();
                     setTimeout($scope.$parent.refresh,1);
@@ -127,7 +131,8 @@ $app.directive('peek', ['$modal', '_', 'messageTypeConstants', 'peekViewFactory'
                 $scope.peeking = true;
                 $scope.messages = [];
 
-                $.post(actionUrl + "/requeueModified", { messageId: msg.MessageId, body: msg.Body }, function (d) {
+                $http.post(actionUrl + "/requeueModified", { messageId: msg.MessageId, body: msg.Body })
+                .then(function () {
                     $scope.viewing = null;
                     $scope.peek();
                     setTimeout($scope.$parent.refresh,1);
@@ -136,7 +141,8 @@ $app.directive('peek', ['$modal', '_', 'messageTypeConstants', 'peekViewFactory'
             $scope.deadLetter = function (msg) {
                 $scope.peeking = true;
                 $scope.messages = [];
-                $.post(actionUrl + "/dead/" + msg.MessageId, function (d) {
+                $http.post(actionUrl + "/dead/" + msg.MessageId)
+                .then(function () {
                     $scope.viewing = null;
                     $scope.peek();
                     setTimeout($scope.$parent.refresh, 1);
