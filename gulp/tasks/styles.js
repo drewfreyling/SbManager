@@ -1,4 +1,3 @@
-/*
 import config       from '../config';
 import gulp         from 'gulp';
 import gulpif       from 'gulp-if';
@@ -31,4 +30,3 @@ gulp.task('styles', function () {
         .pipe(browserSync.stream());
 
 });
-*/

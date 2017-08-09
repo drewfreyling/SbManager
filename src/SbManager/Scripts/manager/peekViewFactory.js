@@ -17,7 +17,7 @@
             this.messageType = messageType;
             this.description = getDescription();
             this.messageCount = getCount(model);
-        };
+        }
 
         function getMessageType(attrs) { //see how the directive is used to obtain these values
             if (_.has(attrs,'dead')) {
@@ -39,7 +39,7 @@
                 default:
                     return "Active Messages";
             }
-        };
+        }
 
         function getCount(model) {
             switch (messageType) {
@@ -50,6 +50,6 @@
                 default:
                     return model.ActiveMessageCount;
             }
-        };
+        }
     }
 })(angular);

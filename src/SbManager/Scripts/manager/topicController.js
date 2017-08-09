@@ -12,7 +12,7 @@
     $scope.delete = function () {
         if (!window.confirm("You sure? This can't be undone and your app might explode.")) return;
         $scope.model = null;
-        $.post(window.applicationBasePath + "/api/v1/busmanager/topic/" + $routeParams.topic + "/delete", function (d) {
+        $.post(window.applicationBasePath + "/api/v1/busmanager/topic/" + $routeParams.topic + "/delete", function () {
             window.location = "#/";
         });
     };

@@ -1,4 +1,4 @@
-﻿$app.controller('homeController', ['$scope', '$route', '_', function ($scope, $route, _) {
+﻿$app.controller('homeController', ['$scope', '$route', function ($scope, $route) {
 
     $scope.deadletterFilterEnabled = $route.current.$$route.deadletterFilter;
 
@@ -25,7 +25,7 @@
     $scope.deleteAll = function () {
         if (!window.confirm("Are you sure you want to delete all topics and queues? This can't be undone and your world might explode.")) return;
         $scope.model = null;
-        $.post(window.applicationBasePath + "/api/v1/busmanager/deleteall", function (d) {
+        $.post(window.applicationBasePath + "/api/v1/busmanager/deleteall", function () {
             $scope.refresh();
         });
     };

@@ -15,11 +15,12 @@
     },
     "globals": {
         "angular": true,
-        "$": true
+        "$": true,
+        "$app": true
     },
     "rules": {
         "quotes": [
-            2,
+            1,
             "single"
         ],
         "eol-last": 0,

@@ -107,7 +107,7 @@ $app.directive('peek', ['$modal', '_', 'messageTypeConstants', 'peekViewFactory'
             $scope.removeMessage = function (msg) {
                 $scope.peeking = true;
                 $scope.messages = [];
-                $.post(actionUrl + "/remove", { messageId: msg.MessageId }, function (d) {
+                $.post(actionUrl + "/remove", { messageId: msg.MessageId }, function () {
                     $scope.viewing = null;
                     $scope.peek();
                     setTimeout($scope.$parent.refresh, 1);
@@ -117,7 +117,7 @@ $app.directive('peek', ['$modal', '_', 'messageTypeConstants', 'peekViewFactory'
                 $scope.peeking = true;
                 $scope.messages = [];
 
-                $.post(actionUrl + "/requeue", { messageId: msg.MessageId }, function (d) {
+                $.post(actionUrl + "/requeue", { messageId: msg.MessageId }, function () {
                     $scope.viewing = null;
                     $scope.peek();
                     setTimeout($scope.$parent.refresh,1);
@@ -127,7 +127,7 @@ $app.directive('peek', ['$modal', '_', 'messageTypeConstants', 'peekViewFactory'
                 $scope.peeking = true;
                 $scope.messages = [];
 
-                $.post(actionUrl + "/requeueModified", { messageId: msg.MessageId, body: msg.Body }, function (d) {
+                $.post(actionUrl + "/requeueModified", { messageId: msg.MessageId, body: msg.Body }, function () {
                     $scope.viewing = null;
                     $scope.peek();
                     setTimeout($scope.$parent.refresh,1);
@@ -136,13 +136,13 @@ $app.directive('peek', ['$modal', '_', 'messageTypeConstants', 'peekViewFactory'
             $scope.deadLetter = function (msg) {
                 $scope.peeking = true;
                 $scope.messages = [];
-                $.post(actionUrl + "/dead/" + msg.MessageId, function (d) {
+                $.post(actionUrl + "/dead/" + msg.MessageId, function () {
                     $scope.viewing = null;
                     $scope.peek();
                     setTimeout($scope.$parent.refresh, 1);
                 });
             };
-            $scope.forwardMessage = function (msg) {
+            $scope.forwardMessage = function () {
                 alert('not implemented');
             };
 
